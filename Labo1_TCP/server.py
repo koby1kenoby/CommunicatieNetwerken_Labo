@@ -1,45 +1,41 @@
+# echo-server.py
+
 import socket
-import threading
 
-HEADER = 64
-PORT = 5050
-SERVER = socket.gethostbyname(socket.gethostname())
-ADDR = (SERVER, PORT)
-FORMAT = 'utf-8'
-DISCONNECT_MESSAGE = "!DISCONNECT"
+HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
+PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
+DISCONNECT_MESSAGE = "!DISCONECT"
+ADDR = (HOST, PORT)
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(ADDR)
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind(ADDR)
 
 
 def handle_client(conn, addr):
-    print(f"[NEW CONNECTION] {addr} connected.")
+    print(f"[Connected] by {addr}")
 
     connected = True
     while connected:
-        msg_length = conn.recv(HEADER).decode(FORMAT)
-        if msg_length:
-            msg_length = int(msg_length)
-            msg = conn.recv(msg_length).decode(FORMAT)
-            if msg == DISCONNECT_MESSAGE:
-                connected = False
+        data = conn.recv(1024)
+        if data.decode('UTF-8') == DISCONNECT_MESSAGE:
+            connected = False
+            response = "[Disconected]".encode('UTF-8')
+        else:
+            print(f"[{addr}]", data.decode('UTF-8'))
+            response = "[MessageReceived]".encode('UTF-8')
 
-            print(f"[{addr}] {msg}")
-            conn.send(input('ResponsMessage: ').encode(FORMAT))
-
+        conn.sendall(response)
+    
+    print(f"[Disconected] client {addr} disconected")
     conn.close()
 
 
 def start():
-    server.listen()
-    print(f"[LISTENING] Server is listening on {SERVER}")
+    s.listen()
+    print(f"[LISTENING] Server is listening on {HOST}")
     while True:
-        conn, addr = server.accept()
-        thread = threading.Thread(target=handle_client, args=(conn, addr))
-        thread.start()
-        print(f"[ACTIVE CONNECTIONS] {threading.activeCount() - 1}")
-
-
-
+        conn, addr = s.accept()
+        handle_client(conn, addr)
+        
 print("[STARTING] server is starting...")
 start()

@@ -1,33 +1,20 @@
+# echo-client.py
+
 import socket
 
-HEADER = 64
-PORT = 5050
-FORMAT = 'utf-8'
-DISCONNECT_MESSAGE = "!DISCONNECT"
-SERVER = "192.168.85.135"
-ADDR = (SERVER, PORT)
-
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(ADDR)
-print("[connected]")
-
-def send(msg):
-    message = msg.encode(FORMAT)
-    msg_length = len(message)
-    send_length = str(msg_length).encode(FORMAT)
-    send_length += b' ' * (HEADER - len(send_length))
-    client.send(send_length)
-    client.send(message)
-    print(client.recv(2048).decode(FORMAT))
+HOST = "127.0.0.1"  # The server's hostname or IP address
+PORT = 65432  # The port used by the server
+DISCONNECT_MESSAGE = "!DISCONECT"
 
 
-while True:
-    send(input())
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.connect((HOST, PORT))
 
-
-#send("Hello World!")
-#input()
-#send("Hello Everyone!")
-#input()
-#send("Hello Tim!")
-#send(DISCONNECT_MESSAGE)
+    connected = True
+    while connected:
+        tekst = input('geef input: ').encode('UTF-8')   #encode en decode voor binair formaat 
+        s.sendall(tekst)
+        data = s.recv(1024)
+        print(data.decode('UTF-8'))
+        if tekst.decode('UTF-8') == DISCONNECT_MESSAGE:
+            connected = False
