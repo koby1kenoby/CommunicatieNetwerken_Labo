@@ -3,7 +3,7 @@ import socket
 
 HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
 PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
-DISCONNECT_MESSAGE = "!DISCONECT"
+DISCONNECT_MESSAGE = "!DISCONNECT"
 ADDR = (HOST, PORT)
 connected = False
 
@@ -16,7 +16,7 @@ def recv_msg(conn, addr):
         recv_msg = conn.recv(1024)
         print(f"[{addr}] ->", recv_msg.decode('UTF-8'))
         if recv_msg.decode('UTF-8') == DISCONNECT_MESSAGE:
-            conn.sendall("[Disconected]".encode('UTF-8'))
+            conn.sendall("[Disconnected]".encode('UTF-8'))
             conn.close()
             connected = False
             print(f"[{addr}] ->", "CLOSED THE CONNECTION!")
@@ -47,4 +47,3 @@ print(f"[LISTENING] Server is listening on {HOST}")
 
 while True:
     start()
-    
