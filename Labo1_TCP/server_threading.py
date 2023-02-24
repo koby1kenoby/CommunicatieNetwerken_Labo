@@ -47,3 +47,4 @@ print(f"[LISTENING] Server is listening on {HOST}")
 
 while True:
     start()
+    
