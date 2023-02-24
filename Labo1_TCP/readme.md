@@ -6,5 +6,5 @@
 
 ## threading  client en server
 - threading client en server files
-- mogelijk om meerdere berichten te versturen en en ontvangen 
+- mogelijk om meerdere berichten te versturen en te ontvangen 
 - diconect message via client (!DISCONNECT)
