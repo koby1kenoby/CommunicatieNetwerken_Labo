@@ -12,7 +12,7 @@ s.bind(ADDR)
 
 
 def handle_client(conn, addr):
-    print(f"[Connected] by {addr}")
+    print(f"[Connected] client {addr} connected")
 
     connected = True
     while connected:
@@ -21,7 +21,7 @@ def handle_client(conn, addr):
             connected = False
             response = "[Disconected]".encode('UTF-8')
         else:
-            print(f"[{addr}]", data.decode('UTF-8'))
+            print(f"[{addr}] ->", data.decode('UTF-8'))
             response = "[MessageReceived]".encode('UTF-8')
 
         conn.sendall(response)
