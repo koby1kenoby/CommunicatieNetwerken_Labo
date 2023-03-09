@@ -34,7 +34,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             msg = s.recv(SIZE).decode(FORMAT)
             print(f"[SERVER]: {msg}")
 
-            # Closing the file.
+            # Closing the file..
             file.close()
 
             # Closing the connection from the server.
