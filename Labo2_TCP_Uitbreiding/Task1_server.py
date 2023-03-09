@@ -2,7 +2,7 @@
 
 import socket
 
-HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
+HOST = "192.168.7.90"  # Standard loopback interface address (localhost)
 PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
 DISCONNECT_MESSAGE = "!DISCONECT"
 FILESHARE_MESSAGE = "!FILE"
@@ -33,7 +33,7 @@ def handle_client(conn, addr):
             print(f"[RECV] Receiving the file data.")
             file.write(data)
             conn.send("File data received".encode('UTF-8'))
-            else:
+        else:
             print(f"[{addr}] ->", data.decode('UTF-8'))
             response = "[MessageReceived]".encode('UTF-8')
 
